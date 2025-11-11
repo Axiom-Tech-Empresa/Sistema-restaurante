@@ -1,18 +1,15 @@
-from flask_sqlalchemy import SQLAlchemy
+import os
 from flask import Flask
-from main import app
+from flask_sqlalchemy import SQLAlchemy
 
-USER = 'root'
-PASSWORD = '1234'
-HOST = 'localhost'
-PORT = '3306'
-DATABASE = 'restaurante_db'
+basedir = os.path.abspath(os.path.dirname(__file__))
 
-# Constrói a URI de conexão
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
+# 2. Criar a instância principal do aplicativo Flask
+app = Flask(__name__)
+
+# 3. Configurar o aplicativo
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
 
+# 4. Criar a instância do SQLAlchemy, ligando-a ao aplicativo Flask
 db = SQLAlchemy(app)
-
-def uri():
-    return app.config['SQLALCHEMY_DATABASE_URI']
